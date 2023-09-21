@@ -89,7 +89,7 @@ def test_SliTraNet(opt):
         
         print("--- start stage 1 ---")
         predfile = os.path.join(opt.pred_dir,base+'_results.txt')
-        
+        print("debugging: predfile path", predfile)
         if os.path.exists(predfile)==False:
             # run stage 1
             if os.path.exists(opt.pred_dir)==False:
@@ -100,8 +100,10 @@ def test_SliTraNet(opt):
         print("--- loading results of stage 1 ---")
         slide_ids, slide_frame_ids_1, slide_frame_ids_2 = read_pred_slide_ids_from_file(predfile)
         slide_transition_pairs, frame_types, slide_transition_types = extract_slide_transitions(slide_ids, slide_frame_ids_1, slide_frame_ids_2)
-        print(slide_ids, slide_frame_ids_1, slide_frame_ids_2)
         print("slide_transition_pairs:", slide_transition_pairs)
+        print("frame_types:", frame_types)
+        print("slide transition type:", slide_transition_types)
+        #sys.exit()
         ##################################################################
         ##  Stage 2: check slide - video candidates                     ##
         ##################################################################
@@ -157,7 +159,7 @@ def test_SliTraNet(opt):
             
             for j1, (clips, clip_inds, clip_transition_nums) in enumerate(clip_loader):
                 #clips = clips.cuda()
-                print("enumerating clip_loader:", j1, clip_inds, clip_transition_nums)
+                #print("enumerating clip_loader:", j1, clip_inds, clip_transition_nums)
                 pred2 = net2(clips)
                 
                 #extract ids for slide transition candidates
@@ -170,6 +172,7 @@ def test_SliTraNet(opt):
                         slide_transition_prediction[key] = []
                         slide_transition_prediction[key].append(pred_classes[torch.where(clip_transition_nums==transition_no)[0]].numpy())                
 
+            print(slide_transition_prediction)
             logfile_path = os.path.join(opt.out_dir, base + "_transitions.txt")
             f = open(logfile_path, "w")
             f.write('Transition No, FrameID0, FrameID1\n')
@@ -182,23 +185,26 @@ def test_SliTraNet(opt):
                 slide_video_pred = np.hstack(slide_video_prediction[key])
 
                 if all(slide_transition_pred==3) and all(slide_video_pred==2):
+                    print("boolean cond true:")
                     neg_indices.append(key)
 
                 else:
-                    printLog("Pair:", slide_transition_pairs[key])
-                    printLog("0:Hard transition, 1:grad transition, 2:slide, 3:video:", slide_transition_pred)
-                    printLog("0:Transition, 1:slide, 2:video:", slide_video_pred) 
+                    printLog("Results for pair:", slide_transition_pairs[key])
+                    printLog("0:Hard transition, 1:grad transition, 2:slide, 3:video:", slide_transition_prediction[key])
+                    printLog("0:Transition, 1:slide, 2:video:", slide_video_prediction[key]) 
 
                     s+=1
                     pair = slide_transition_pairs[key]
                     f = open(logfile_path, "a")
                     f.write("{}, {}, {}\n".format(s,int(pair[0])+1,int(pair[1])+1))
-                    f.close() 
+                    f.close()
             neg_indices = np.hstack(neg_indices)    
+            #print(neg_indices)
             mask = np.ones(len(slide_transition_pairs), dtype=bool)
             mask[neg_indices] = False
+            #print(mask)
             filtered_slide_transition_pairs = slide_transition_pairs[mask,...]               
-                
+            #print(filtered_slide_transition_pairs)
             print("Done")                
 
             

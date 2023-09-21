@@ -29,7 +29,7 @@ from data.test_video_clip_dataset import BasicTransform
 def detect_initial_slide_transition_candidates_resnet2d(net, videofile, base, roi, load_size_roi, out_dir, opt):
     # load video file
     #vr = VideoReader(videofile, width=load_size_roi[1], height=load_size_roi[0]) 
-    vr = get_frames_as_tensor(videofile, "MoviePy", 1)
+    vr = get_frames_as_tensor(videofile, "MoviePy", 360, 640)
 
     #determine number of frames
     N_frames = len(vr)  
@@ -62,10 +62,8 @@ def detect_initial_slide_transition_candidates_resnet2d(net, videofile, base, ro
         imgs = torch.zeros((2,opt.patch_size,opt.patch_size,int(opt.input_nc/2)))
             
         if opt.in_gray: #opencv rgb2gray for torch
-            print("debugging: opt.in_gray true", frame.shape)
             frame = 0.299*frame[...,0]+0.587*frame[...,1]+0.114*frame[...,2]
-            frame = frame.unsqueeze(2) # but nothing changed!!
-            print("after multiplications and unsqueeze, ", frame.shape)
+            frame = frame.unsqueeze(2) # shape does not change before and after multiplication
         
         # crop to bounding box region
         frame = crop_frame(frame,roi[0],roi[1],roi[2],roi[3])  # frame.shape = torch.Size([136, 256, 1])
@@ -96,8 +94,8 @@ def detect_initial_slide_transition_candidates_resnet2d(net, videofile, base, ro
             pred = net(imgs.unsqueeze(0))
             pred = pred.squeeze(1)            
             pred = activation(pred)
-            all_predictions.append(pred)
-            if pred<0.5: #transition (class 0)
+            all_predictions.append(float(pred))
+            if pred<0.5: #transition (class 0) ## TEST TO VARY THRESHOLD
                 if (i - anchor_frame_idx) > opt.slide_thresh: #static frame
                     if video_frame_idx is not None: 
                         if (video_frame_idx - prev_video_frame_idx) > opt.video_thresh:

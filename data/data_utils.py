@@ -40,7 +40,7 @@ def determine_load_size_roi(videofile, rois, patch_size, full_size=False):
     f = patch_size/w            
     print(f"path size is {patch_size} with width {w} which gives scaling factor f = {f}")
     #vr0 = VideoReader(videofile)   
-    vr0 = get_frames_as_tensor(videofile, "MoviePy", 1)
+    vr0 = get_frames_as_tensor(videofile, "MoviePy", 360, 640)
 
     frame = vr0[0]
     H1,W1,_ = frame.shape #HR video: 1920x1080
