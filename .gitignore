@@ -13,5 +13,5 @@ Desktop.ini
 # Ignore python notebook for testing
 *.ipynb
 
-# Set results folder as untracked
-/results/
+# Data and results folder
+results/*

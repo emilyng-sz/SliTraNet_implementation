@@ -36,3 +36,12 @@ def get_frames_as_tensor(path, library="MoviePy", height = None, width = None, f
         raise ValueError("set library='MoviePy' or 'cv2' ")
     print(f"number of frames as tensors returned are {len(frame_as_tensor)}")
     return frame_as_tensor
+
+def generate_subplots(video_frames, columns, image_height=2):
+    N = len(video_frames)
+    fig, axes = plt.subplots((N//columns)+1, figsize=(13,(N//columns)*image_height))
+    for i,ax in enumerate(axes.flat):
+        ax.imshow(frames[video_frames[i]-1])
+        ax.title.set_text(f'Frame {video_frames[i]-1}')
+
+    plt.show()

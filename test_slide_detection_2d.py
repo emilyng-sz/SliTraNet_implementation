@@ -95,8 +95,8 @@ def detect_initial_slide_transition_candidates_resnet2d(net, videofile, base, ro
             pred = pred.squeeze(1)            
             pred = activation(pred)
             all_predictions.append(float(pred))
-            if pred<0.5: #transition (class 0) ## TEST TO VARY THRESHOLD
-                if (i - anchor_frame_idx) > opt.slide_thresh: #static frame
+            if pred<0.5:
+                if (i - anchor_frame_idx) > opt.slide_thresh: 
                     if video_frame_idx is not None: 
                         if (video_frame_idx - prev_video_frame_idx) > opt.video_thresh:
                             print("video frame {} at {} to {}".format(-1,prev_video_frame_idx+1, video_frame_idx+1))
@@ -121,7 +121,6 @@ def detect_initial_slide_transition_candidates_resnet2d(net, videofile, base, ro
                 anchor_frame_idx = i
                 anchor_frame = frame 
                
-    print("length of all predicted results", len(all_predictions)) 
     frame_ids_1 = np.array(frame_ids_1)
     frame_ids_2 = np.array(frame_ids_2)
     
@@ -196,6 +195,6 @@ if __name__ == '__main__':
     parser.add_argument('--phase', type=str, default='test', help='train, val, test, etc')
 
 
-    opt = parser.parse_args()  
+    opt = parser.parse_args(datset_dir =  "../videos/",)  
 
     test_resnet2d(opt)   

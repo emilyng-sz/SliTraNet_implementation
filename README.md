@@ -1,3 +1,20 @@
+# SliTraNet_Implementation
+Forked repository containing 
+- modifications for non-cuda/non-NVIDA users
+- replace deprecated decord library (refer to `helper_functions.py`)
+
+## To check if cuda is available, run:
+```
+import torch
+torch.cuda.is_available()
+```
+
+## To 
+```
+torch.set_default_device("mps")
+```
+---
+
 # SliTraNet
 Automatic Detection of Slide Transitions in Lecture Videos using Convolutional Neural Networks
 

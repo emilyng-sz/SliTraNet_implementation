@@ -57,7 +57,6 @@ def determine_load_size_roi(videofile, rois, patch_size, full_size=False):
         H3 = round(H1*f2)
         W3 = round(W1*f2)            
         load_size_full = np.array((H3,W3), np.int32) 
-        print(base, roi, load_size_roi, load_size_full , " are returned in determine_load_size_roi")
         return base, roi, load_size_roi, load_size_full
         
     return base, roi, load_size_roi
