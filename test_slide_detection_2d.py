@@ -19,7 +19,6 @@ import torch.nn as nn
 
 #import decord
 #from decord import VideoReader
-from emily_helper_functions.video_reader import get_frames_as_tensor
 
 from model import *
 
@@ -195,6 +194,6 @@ if __name__ == '__main__':
     parser.add_argument('--phase', type=str, default='test', help='train, val, test, etc')
 
 
-    opt = parser.parse_args(datset_dir =  "../videos/",)  
+    opt = parser.parse_args()  
 
     test_resnet2d(opt)   

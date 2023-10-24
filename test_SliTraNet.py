@@ -66,7 +66,7 @@ def test_SliTraNet(opt):
 
     #### Create dataloader
     # --------------------------------------------------------------- 
-    video_dir = opt.dataset_dir + opt.phase   
+    video_dir = opt.dataset_dir + '/' + opt.phase   
 
     videoFilenames = []
     videoFilenames.extend(os.path.join(video_dir, x)
@@ -88,7 +88,6 @@ def test_SliTraNet(opt):
         
         print("--- start stage 1 ---")
         predfile = os.path.join(opt.pred_dir,base+'_results.txt')
-        print("debugging: predfile path", predfile)
         if os.path.exists(predfile)==False:
             if os.path.exists(opt.pred_dir)==False:
                 os.makedirs(opt.pred_dir)            

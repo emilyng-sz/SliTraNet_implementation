@@ -14,7 +14,7 @@ from moviepy.editor import VideoFileClip
 #import decord
 #from decord import VideoReader
 
-def get_frames_as_tensor(path, library="MoviePy", frame_per_sec= None):
+def get_frames_as_tensor(path, library="MoviePy", height = None, width = None, frame_per_sec= None):
     '''
     input: video path name
     output: list of video frames in tensor format
@@ -30,6 +30,8 @@ def get_frames_as_tensor(path, library="MoviePy", frame_per_sec= None):
             print(f"Video default fps is {frame_per_sec}")
 
         for frame in video_clip.iter_frames(fps=frame_per_sec): 
+            if height or width:
+                frame = cv2.resize(frame, (width, height))
             frame_as_tensor.append(torch.as_tensor(frame))
     
     elif library=='cv2': #cv2
