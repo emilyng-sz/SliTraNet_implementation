@@ -1,16 +1,50 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Feb 10 16:49:20 2021
+Updated on September 2023
 
 @author: Aline Sindel
+@co-author: Emily Ng Siew Zhang
 """
 
 import numpy as np
 import os
-
+import cv2
+import torch
+from moviepy.editor import VideoFileClip
 #import decord
 #from decord import VideoReader
-from emily_helper_functions.video_reader import get_frames_as_tensor
+
+def get_frames_as_tensor(path, library="MoviePy", frame_per_sec= None):
+    '''
+    input: video path name
+    output: list of video frames in tensor format
+    '''
+    frame_as_tensor = []
+
+    if library=="MoviePy":
+        # Create a VideoFileClip object from the input video
+        video_clip = VideoFileClip(path) # returns video.io VideoFileClip 
+        # default is sth like 30fps, can check using video_clip.fps
+        if not frame_per_sec:
+            frame_per_sec = video_clip.fps 
+            print(f"Video default fps is {frame_per_sec}")
+
+        for frame in video_clip.iter_frames(fps=frame_per_sec): 
+            frame_as_tensor.append(torch.as_tensor(frame))
+    
+    elif library=='cv2': #cv2
+        cap = cv2.VideoCapture(path)
+        length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) 
+        for i in range(length):
+            cap.set(cv2.CAP_PROP_POS_FRAMES, i) # starts counting from 0
+            ret, frame = cap.read()
+            frame_as_tensor.append(torch.as_tensor(frame))
+    
+    else:
+        raise ValueError("set library='MoviePy' or 'cv2' ")
+    print(f"number of frames as tensors returned are {len(frame_as_tensor)}")
+    return frame_as_tensor
+
 
 def is_image_file(filename):
     return any(filename.endswith(extension) for extension in [".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".PNG", ".JPG", ".JPEG", ".BMP", ".TIF", ".TIFF"])

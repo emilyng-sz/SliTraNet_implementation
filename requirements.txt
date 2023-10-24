@@ -2,4 +2,6 @@ torch
 torchvision
 opencv-contrib-python-headless
 numpy
-decord
+#decord
+cv2
+moviepy

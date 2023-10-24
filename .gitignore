@@ -7,11 +7,6 @@ Desktop.ini
 
 # Python files 
 *.pyc
-**/*.pyc
-**/**/*.pyc
 
-# Ignore python notebook for testing
-*.ipynb
-
-# Data and results folder
+# Set results folder as untracked
 results/*

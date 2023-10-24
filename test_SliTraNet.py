@@ -16,7 +16,6 @@ import torch.nn as nn
 
 #import decord
 #from decord import VideoReader
-from emily_helper_functions.video_reader import get_frames_as_tensor
 
 from model import *
 from test_slide_detection_2d import detect_initial_slide_transition_candidates_resnet2d
@@ -27,7 +26,7 @@ from data.test_video_clip_dataset import BasicTransform, VideoClipTestDataset
 
 def printLog(*args, **kwargs):
     print(*args, **kwargs)
-    with open('output.out','a') as file:
+    with open('results/output.out','a') as file:
         print(*args, **kwargs, file=file)
 
 def detect_slide_transitions(pred_feat):
