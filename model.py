@@ -44,7 +44,6 @@ class ResNet3d(nn.Module):
         self.conv_final = nn.Conv2d(num_ch_3d, cfg.n_class, kernel_size=1, bias=False)
 
     def forward(self, x):
-        print("check where tensor is in model.py forward function", x.get_device())
         x = self.backbone_3d(x)
         x = torch.squeeze(x, dim=2)
         out = self.conv_final(x)
