@@ -2,7 +2,7 @@
 
 This is a fork of the respository SliTraNet (found [here](https://github.com/asindel/SliTraNet)), which contains the source code to the conference article "SliTraNet: Automatic Detection of Slide Transitions in Lecture Videos using Convolutional Neural Networks" accepted at OAGM Workshop 2021 [here](https://arxiv.org/pdf/2202.03540.pdf)
 
-## NOTE:
+## Important to Note:
 This fork is for **personal testing** and exploration of SliTraNet. This is **NOT intended to be merged into the main branch of original repository**
 
 ## Key Changes
